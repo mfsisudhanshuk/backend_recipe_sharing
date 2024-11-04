@@ -1,13 +1,16 @@
 import type { Request, Response } from "express";
+import * as recipeService from '../../services/v1/recipe.service';
 
 // Note: List of recipe for Home page
 const getRecipeList = async (req: Request, res: Response) => {
   try {
-    res.status(200).json({ data: "Return the list of recipe created" });
-  } catch (error) {
-    res.status(500).json({ error: "Error fetching recipe" });
+    const recipes = await recipeService.getAllRecipes();
+    return res.status(200).json({ data: recipes });
+  } catch (error: any) {
+    return res.status(500).json({ error: "Error fetching recipes: " + error.message });
   }
 };
+
 
 // Note: Get single recipe i.e detail page
 const getRecipe = async (req: Request, res: Response) => {
@@ -19,15 +22,28 @@ const getRecipe = async (req: Request, res: Response) => {
 };
 
 // Note: Create a new recipe, logged user user only can create.
-const createRecipe = async (req: Request, res: Response) => {
+export const createRecipe = async (req: Request, res: Response): Promise<void> => {
   try {
-    res.status(200).json({ data: "Create a new recipe" });
-  } catch (error) {
-    res.status(500).json({ error: "Error fetching recipe" });
+    const { title, ingredients, steps, image, preparationTime, createdBy } = req.body;
+
+    // You can add more validation here as needed
+
+    const newRecipe = await recipeService.createRecipe({
+      title,
+      ingredients,
+      steps,
+      image,
+      preparationTime,
+      createdBy, // This should be the ID of the logged-in user
+    });
+
+    res.status(201).json({ data: newRecipe });
+  } catch (error: any) {
+    res.status(500).json({ error: "Error creating recipe: " + error.message });
   }
 };
 
-// Grouping exports in an object named `recipeController`
+//NOTE: Grouping exports in an object named `recipeController`
 export const recipeController = {
   getRecipeList,
   getRecipe,

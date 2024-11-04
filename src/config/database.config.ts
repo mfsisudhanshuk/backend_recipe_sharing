@@ -4,8 +4,6 @@ export const connectDatabase = () => {
   const MONGODB_CONN_URL: string = process.env.MONGODB_CONN_URL
     ? process.env.MONGODB_CONN_URL
     : "Mogodb URL in env is missing";
-
-  console.log('MONGODB_CONN_URL env :- ', MONGODB_CONN_URL);
   
   mongoose
     .connect(MONGODB_CONN_URL, {
