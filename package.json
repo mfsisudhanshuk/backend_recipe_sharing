@@ -1,0 +1,34 @@
+{
+  "name": "backend_recipe_sharing",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "clean": "rimraf ./build",
+    "build": "npx tsc",
+    "start": "node build/server.js",
+    "local": "concurrently \"npx tsc --watch\" \"nodemon -q ./build/server.js\"",
+    "compile": "ts-node src/server.ts",
+    "dev": "nodemon -q --watch src -e ts --exec \"npx ts-node src/server.ts\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "mongoose": "^8.8.0",
+    "tsconfig-paths": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.8.7",
+    "concurrently": "^9.0.1",
+    "nodemon": "^3.1.7",
+    "rimraf": "^6.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
