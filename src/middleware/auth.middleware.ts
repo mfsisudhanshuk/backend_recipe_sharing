@@ -1,13 +1,11 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model";
 import { NextFunction } from "express";
-import type { Request, Response } from "express";
+import type { Response } from "express";
+import { STATUS_CODE } from "../utils/constants.utils";
+import { AuthenticatedRequest } from "../types/user.type";
 
-// Extend Express Request interface to include user
-interface AuthenticatedRequest extends Request {
-  user?: any; // You can replace `any` with a specific User type if available
-}
-
+// AuthenticatedRequest
 // Check if the use is AUTHENTICATED or not
 export const isAuthenticatedUser = async (
   req: AuthenticatedRequest,
@@ -29,7 +27,7 @@ export const isAuthenticatedUser = async (
       res.send({
         error: "Unauthorized access.",
         message: null,
-        httpStatus: 401,
+        httpStatus: STATUS_CODE.UNAUTHORIZED,
         data: null,
       })
     );
@@ -42,10 +40,10 @@ export const isAuthenticatedUser = async (
     const userExist = await User.findById(decoded.id as string);
 
     if (!userExist) {
-      return res.status(404).json({
+      return res.status(STATUS_CODE.RESOURCE_NOT_FOUND).json({
         error: "User not found",
         message: null,
-        httpStatus: 404,
+        httpStatus: STATUS_CODE.RESOURCE_NOT_FOUND,
         data: null,
       });
     }
@@ -54,7 +52,7 @@ export const isAuthenticatedUser = async (
     next();
   } catch (error: any) {
     if (error.name === "TokenExpiredError") {
-      return res.status(401).json({
+      return res.status(STATUS_CODE.UNAUTHORIZED).json({
         error: "Session expired, please log in again.",
         message: null,
         httpStatus: 401,
@@ -65,7 +63,7 @@ export const isAuthenticatedUser = async (
     return res.status(500).json({
       error: "Invalid token,  please log in again.",
       message: error.message,
-      httpStatus: 500,
+      httpStatus: STATUS_CODE.INTERNAL_SERVER_ERROR,
       data: null,
     });
   }
