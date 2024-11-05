@@ -35,3 +35,5 @@ export const PNG = "png";
 
 export const FORGOT_PASSWORD = "forgot-password";
 export const PASSWORD_RESET = "password-reset";
+
+export const SALT_ROUND = 10;

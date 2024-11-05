@@ -1,5 +1,5 @@
 import express from "express";
-import type { Request, Response, Express } from "express";
+import type { Express } from "express";
 import cors from "cors";
 import dotenv from "dotenv"
 
@@ -10,18 +10,19 @@ if (process.env.NODE_ENV == "production") {
   dotenv.config({ path: "./.env.local" });
 }
 
-// NOTE: Add importS
+// NOTE: Add imports
 import { connectDatabase } from "./config/database.config";
 import recipeRouters from "./routes/v1/recipe.route";
 import authRouters from "./routes/v1/auth.route";
 import { STATUS_CODE } from "./utils/constants.utils";
-
 
 const app: Express = express();
 const PORT: Number = process.env.PORT ? parseInt(process.env.PORT) : 8001;
 
 // NOTE: Add Middleware
 app.use(express.json());
+
+app.use(cors());
 
 // NOTE: Add routes
 app.use("/api/v1/", recipeRouters);
@@ -34,9 +35,6 @@ app.get("/healthcheck", (req: any, res: any) => {
     message: "API is working",
   });
 });
-
-
-app.use(cors());
 
 // NOTE: Handling unhandled routes at the END.
 app.use("*", (res: any) => {

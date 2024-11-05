@@ -26,16 +26,11 @@ export const userRegistrationValidator = [
 
 
 export const userLoginValidator = [
-    body('name')
-        .isString()
-        .isLength({ min: 3, max: 30 })
-        .withMessage('Name must be between 3 and 30 characters long'),
-
     body('email')
         .isEmail()
         .withMessage('Please provide a valid email address'),
 
     body('password')
-        .isLength({ min: 8 })
-        .withMessage('Password must be at least 8 characters long'),
+        .isLength({ min: 5 })
+        .withMessage('Password must be at least 5 characters long'),
 ];

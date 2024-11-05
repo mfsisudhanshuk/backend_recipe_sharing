@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import * as recipeService from "../../services/v1/recipe.service";
-import { body, validationResult } from "express-validator";
+import {  validationResult } from "express-validator";
 import { STATUS_CODE } from "../../utils/constants.utils";
 
 // Note: List of recipe for Home page
@@ -30,20 +30,20 @@ export const createRecipe = async (
   res: Response
 ): Promise<any> => {
   // Validation middleware
-  const validateRecipe = [
-    body("title")
-      .isString()
-      .isLength({ min: 3, max: 100 })
-      .withMessage("Title should be between 3 and 100 characters"),
-    body("ingredients")
-      .isArray({ min: 1 })
-      .withMessage("Ingredients should be an array with at least one item"),
-    body("steps").isString().withMessage("Steps are required"),
-    body("image").optional().isURL().withMessage("Image should be a valid URL"),
-    body("preparationTime")
-      .isInt({ min: 1 })
-      .withMessage("Preparation time should be a positive integer"),
-  ];
+  // const validateRecipe = [
+  //   body("title")
+  //     .isString()
+  //     .isLength({ min: 3, max: 100 })
+  //     .withMessage("Title should be between 3 and 100 characters"),
+  //   body("ingredients")
+  //     .isArray({ min: 1 })
+  //     .withMessage("Ingredients should be an array with at least one item"),
+  //   body("steps").isString().withMessage("Steps are required"),
+  //   body("image").optional().isURL().withMessage("Image should be a valid URL"),
+  //   body("preparationTime")
+  //     .isInt({ min: 1 })
+  //     .withMessage("Preparation time should be a positive integer"),
+  // ];
 
   const errors = validationResult(req);
 
