@@ -21,6 +21,8 @@ export const getAllRecipes = async (): Promise<any[]> => {
  * @returns {Promise<Recipe>} The created recipe
  */
 export const createRecipe = async (recipeData: any): Promise<any> => {
+   // validate the recipe data.
+
     try {
       const newRecipe = new Recipe(recipeData);
       return await newRecipe.save();
