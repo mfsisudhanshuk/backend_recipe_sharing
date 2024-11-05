@@ -14,6 +14,7 @@ if (process.env.NODE_ENV == "production") {
 import { connectDatabase } from "./config/database.config";
 import recipeRouters from "./routes/v1/recipe.route";
 import authRouters from "./routes/v1/auth.route";
+import commentRouters from "./routes/v1/comment.route";
 import { STATUS_CODE } from "./utils/constants.utils";
 
 const app: Express = express();
@@ -28,6 +29,8 @@ app.use(cors());
 app.use("/api/v1/", recipeRouters);
 
 app.use("/api/v1/auth/", authRouters);
+
+app.use("/api/v1/comments/", commentRouters );
 
 // NOTE: Test API for development 
 app.get("/healthcheck", (req: any, res: any) => {
