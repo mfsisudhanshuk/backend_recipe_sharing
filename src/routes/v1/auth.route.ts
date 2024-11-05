@@ -1,5 +1,6 @@
 import express from "express";
 import { authControllers } from "../../controllers/v1/auth.controller";
+import { userRegistrationValidator } from "../../middleware/authValidation.middleware";
 
 /**
  * Router for handling recipe-related endpoints
@@ -12,7 +13,7 @@ const authRouters = express.Router();
 authRouters.post("/login",authControllers.userLogin);
 
 // NOTE: Route to Register user
-authRouters.get("/register", authControllers.userRegistration);
+authRouters.post("/register", userRegistrationValidator, authControllers.userRegistration);
 
 
 export default authRouters;

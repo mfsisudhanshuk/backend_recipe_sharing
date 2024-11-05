@@ -6,10 +6,7 @@ export const connectDatabase = () => {
     : "Mogodb URL in env is missing";
   
   mongoose
-    .connect(MONGODB_CONN_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    } as mongoose.ConnectOptions)
+    .connect(MONGODB_CONN_URL)
     .then((con) => {
       console.log(
         `MongoDB Database connected with host ${con.connection.host}`

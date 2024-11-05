@@ -1,5 +1,6 @@
 import express from "express";
 import { recipeController } from "../../controllers/v1/recipe.controller";
+import { param } from "express-validator";
 
 /**
  * Router for handling recipe-related endpoints
@@ -12,7 +13,7 @@ const recipeRouters = express.Router();
 recipeRouters.post("/recipe",recipeController.createRecipe); //TODO: Addd middleware only auth user
 
 // NOTE: Route to get a specific recipe by ID
-recipeRouters.get("/recipe/:id", recipeController.getRecipe);
+recipeRouters.get("/recipe/:recipeId", param("recipeId").isMongoId(), recipeController.getRecipe);
 
 // NOTE: Route to list of recipe
 recipeRouters.get("/recipes", recipeController.getRecipeList);
