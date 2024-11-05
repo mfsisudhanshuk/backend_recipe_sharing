@@ -8,7 +8,7 @@ import Recipe from '../../models/recipe.model'; // Adjust the import path as nec
 export const getAllRecipes = async (): Promise<any[]> => {
   try {
    //  const recipes = await Recipe.find().populate('createdBy', 'username'); // TODO: Uncomment after user model adde Populate createdBy to get username
-   const recipes = await Recipe.find();
+    const recipes = await Recipe.find();
     return recipes;
   } catch (error: any) {
     throw new Error('Error fetching recipes: ' + error.message);

@@ -4,10 +4,10 @@ import { body, validationResult } from "express-validator";
 import { STATUS_CODE } from "../../utils/constants.utils";
 
 // Note: List of recipe for Home page
-const getRecipeList = async (req: Request, res: Response) => {
+const getRecipeList = async (req: Request, res: Response) : Promise<any> => {
   try {
     const recipes = await recipeService.getAllRecipes();
-    return res.status(STATUS_CODE.OK).json({ data: recipes });
+    res.status(STATUS_CODE.OK).json({ data: recipes });
   } catch (error: any) {
     return res
       .status(STATUS_CODE.INTERNAL_SERVER_ERROR)
