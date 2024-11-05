@@ -1,7 +1,7 @@
 import express from "express";
 import { recipeController } from "../../controllers/v1/recipe.controller";
-import { param } from "express-validator";
 import { isAuthenticatedUser } from "../../middleware/auth.middleware";
+import { validateRecipe, validRecipeId } from "../../middleware/recipeValidation.middleware";
 
 /**
  * Router for handling recipe-related endpoints
@@ -11,10 +11,10 @@ import { isAuthenticatedUser } from "../../middleware/auth.middleware";
 const recipeRouters = express.Router();
 
 // NOTE: Route to create a new recipe
-recipeRouters.post("/recipe", isAuthenticatedUser, recipeController.createRecipe); //TODO: Addd middleware only auth user
+recipeRouters.post("/recipe", isAuthenticatedUser, validateRecipe , recipeController.createRecipe); //TODO: Addd middleware only auth user
 
 // NOTE: Route to get a specific recipe by ID
-recipeRouters.get("/recipe/:recipeId", param("recipeId").isMongoId(), recipeController.getRecipe);
+recipeRouters.get("/recipe/:id", validRecipeId, recipeController.getRecipe);
 
 // NOTE: Route to list of recipe
 recipeRouters.get("/recipes", recipeController.getRecipeList);
