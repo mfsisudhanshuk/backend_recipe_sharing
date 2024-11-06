@@ -44,3 +44,33 @@ export const getSingleRecipe = async (id: string): Promise<any | null> => {
     throw new Error("Error fetching recipe: " + error.message);
   }
 };
+
+
+/**
+ * Rate a recipe and update its average rating.
+ * @param {string} recipeId - The ID of the recipe to be rated.
+ * @param {number} userRating - The rating provided by the user (e.g., between 1 and 5).
+ * @returns {Promise<any>} - The updated recipe with the new average rating.
+ */
+export const rateRecipe = async (recipeId: string, userRating: number): Promise<any> => {
+  if (userRating < 1 || userRating > 5) {
+    throw new Error("Rating must be between 1 and 5");
+  }
+
+  const recipe = await Recipe.findById(recipeId);
+  if (!recipe) {
+    throw new Error("Recipe not found");
+  }
+
+  // Calculate new rating values
+  const newRatingCount = recipe.ratingCount + 1;
+  const newRatingTotal = recipe.rating * recipe.ratingCount + userRating;
+  const newAverageRating = newRatingTotal / newRatingCount;
+
+  // Update and save the recipe
+  recipe.rating = newAverageRating;
+  recipe.ratingCount = newRatingCount;
+  await recipe.save();
+
+  return recipe;
+};

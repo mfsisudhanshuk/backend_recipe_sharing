@@ -93,9 +93,33 @@ export const createRecipe = async (
   }
 };
 
+
+/**
+ * Controller to handle rating a recipe
+ * @param {Request} req - Express request object
+ * @param {Response} res - Express response object
+ */
+export const rateRecipe = async (req: Request, res: Response) => {
+  try {
+    const { recipeId } = req.params;
+    const { rating } = req.body;
+
+    const updatedRecipe = await recipeService.rateRecipe(recipeId, rating);
+    res.status(200).json({
+      message: "Recipe rated successfully",
+      data: updatedRecipe,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      error: error.message,
+    });
+  }
+};
+
 //NOTE: Grouping exports in an object named `recipeController`
 export const recipeController = {
   getRecipeList,
   getRecipe,
   createRecipe,
+  rateRecipe,
 };
