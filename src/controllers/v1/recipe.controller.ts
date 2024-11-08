@@ -11,8 +11,9 @@ import { AuthenticatedRequest } from "../../types/user.type";
 // Note: List of recipe for Home page
 // TODO: Update any type
 const getRecipeList = async (req: Request, res: Response): Promise<any> => {
+  const ingredient = req.query.ingredient as string;
   try {
-    const recipes = await recipeService.getAllRecipes();
+    const recipes = await recipeService.getAllRecipes(ingredient);
     return res.status(STATUS_CODE.OK).json({
       error: null,
       message: SUCCESS_MESSAGES.FETCH_RECIPES,
