@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import * as commentRecipeService from "../../services/v1/comment.service";
 import { AuthenticatedRequest } from "../../types/user.type";
 import { validationResult } from "express-validator";
+import { STATUS_CODE } from "../../utils/constants.utils";
 
 const getRecipeComments = async (req: Request, res: Response): Promise<any> => {
   const { recipeId } = req.params; // Extract recipe ID from route parameters
@@ -10,23 +11,25 @@ const getRecipeComments = async (req: Request, res: Response): Promise<any> => {
     const comments = await commentRecipeService.getRecipeComments(recipeId);
 
     if (comments.length === 0) {
-       res.status(404).json({
+       return res.status(STATUS_CODE.OK).json({
         error: "No comments found for this recipe.",
         message: null,
-        httpStatus: 404,
-        data: null,
+        httpStatus: STATUS_CODE.RESOURCE_NOT_FOUND,
+        data: comments,
       });
     }
 
-     res.status(200).json({
-      success: true,
+    return res.status(STATUS_CODE.OK).json({
+      error: null,
+      message: 'Comment fetched successfully',
+      httpStatus: STATUS_CODE.OK,
       data: comments,
     });
   } catch (error: any) {
-     res.status(500).json({
-      error: "Internal Server Error",
-      message: error.message,
-      httpStatus: 500,
+    return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+      error:error.message ,
+      message: null,
+      httpStatus: STATUS_CODE.INTERNAL_SERVER_ERROR,
       data: null,
     });
   }
@@ -36,7 +39,7 @@ export const createRecipeComment = async (req: AuthenticatedRequest, res: Respon
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({
+    return res.status(STATUS_CODE.BAD_REQUEST).json({
       errors: errors.array(),
     });
   }
@@ -49,10 +52,10 @@ export const createRecipeComment = async (req: AuthenticatedRequest, res: Respon
   try {
     // Validate input
     if (!userId || !comment) {
-       res.status(400).json({
+      return res.status(STATUS_CODE.BAD_REQUEST).json({
         error: "User ID and comment text are required",
         message: null,
-        httpStatus: 400,
+        httpStatus: STATUS_CODE.BAD_REQUEST,
         data: null,
       });
     }
@@ -64,15 +67,17 @@ export const createRecipeComment = async (req: AuthenticatedRequest, res: Respon
       comment
     );
 
-     res.status(201).json({
+     return res.status(STATUS_CODE.CREATED).json({
       success: true,
       data: newComment,
+      message: 'Comment added successfully',
+      httpStatus: STATUS_CODE.CREATED
     });
   } catch (error: any) {
-     res.status(500).json({
-      error: "Internal Server Error",
-      message: error.message,
-      httpStatus: 500,
+    return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+      error: error.message || "Internal Server Error",
+      message: null,
+      httpStatus: STATUS_CODE.INTERNAL_SERVER_ERROR,
       data: null,
     });
   }

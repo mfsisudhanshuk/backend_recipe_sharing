@@ -60,13 +60,21 @@ export const VALIDATION_MESSAGE_REGISTER = {
 
 export const SUCCESS_MESSAGES = {
   REGISTER: 'User registered successfully',
-  LOGIN: 'User login successful'
+  LOGIN: 'User login successful',
+  FETCH_RECIPES: 'Recipe fetched successfully',
+  ADD_RECIPE: 'Created a new recipe successfully',
+  RATING_RECIPE: 'Recipe rated successfully'
 }
 
 export const FAILED_MESSAGES = {
   REGISTER: 'Error Creating user',
   LOGIN: 'Error logging in user',
-  INVALID_EMAIL_OR_PASSWORD: 'Invalid email or password'
+  INVALID_EMAIL_OR_PASSWORD: 'Invalid email or password',
+  FETCH_RECIPES: 'Error fetching recipes',
+  RECIPE_NOT_FOUND: 'Recipe not found',
+  INTERNAL_SERVER_ERROR: 'Internal Server Error',
+  ADD_RECIPE: 'Error creating recipe',
+  RATING_RECIPE: 'Recipe rated failed'
 }
 
 
