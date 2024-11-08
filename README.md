@@ -23,6 +23,26 @@
 - npm run build
 
 
+## TEST PAYLOAD DATA for login
+
+```
+User 1
+
+{
+    "email": "test2@gmail.com",
+    "password":"test12345"
+}
+
+
+User 2
+
+{
+    "email": "test1@gmail.com",
+    "password":"test12345"
+}
+
+```
+
 
 ## Database design [Link](https://www.plantuml.com/plantuml/png/hP7HJy8m4CRVzrUSyuKPGNqbom9YI8n63SApAUk9DMktj5V16FztIvkHq83pmRwi-Uxhx-wxZGmnJLPMoGd7Lw4GvcnPOKynYHcK5JC6jdV8S-ZDpq-dqx4x6HJ5xi7JNM-JGMwBJNvXYoG9W8L1dS5N0kuunulW6GpXSVcE9TroBrjdyUmXF9CMQkLLb4nK-rBZfbZNck-hfKP6oCVav1jtIxxRtZCiHOCTtKbG5RLsNurSe2BZ2lV2K1wgXIyRmiP4BoHRHP16OyCq8r6hkV3X7gnSelP5fplV8MrIMqLxXJRWzMSq-c_9FUiFUuyrxLSMgV6u7SqdjPIewD-wbu7N_TSNMsHwbKA_3-dbO72Mmgmb1h-1ug2hpRSI7ySyazqKQoq2AS2FiLmO3BZO60FVsDOqGiMjh7u0)
 
@@ -32,6 +52,8 @@
 ## Important notes about the project
 
 - `main` - Branch for `production` use only
-- `development  - Branch for 'development' use only
-- `<github_username_issue_number>-#<issue-number>` - Create pr to merge in dev branch.
+- `development`  - Branch for 'development' use only
+- `#<issue-number>-<title-of-issue>` - Create pr to merge in `development` branch.
+
+NOTE: `development` to `main` PR require one approval to get merged.
 

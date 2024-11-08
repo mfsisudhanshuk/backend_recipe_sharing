@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    select: false, // NOTE: To exclude field to be return by default.
   },
   createdAt: {
     type: Date,

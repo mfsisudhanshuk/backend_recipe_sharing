@@ -1,12 +1,14 @@
 // services/userService.js
 import User from '../../models/user.model';
 import jwt from 'jsonwebtoken';
-import bcrypt from "bcryptjs";
+import bcrypt from 'bcryptjs';
 import { SALT_ROUND } from '../../utils/constants.utils';
+import { userPayload } from '../../types/user.type';
 
-export const registerUser = async (userData: any) => {
 
-   const hashedPassword = await bcrypt.hash(userData.password, SALT_ROUND);
+export const registerUser = async (userData: userPayload) => {
+
+   const hashedPassword = await bcrypt.hash(userData.password as string, SALT_ROUND);
  
    const newUser = new User({ ...userData, password: hashedPassword });
    await newUser.save();
@@ -22,7 +24,7 @@ export const registerUser = async (userData: any) => {
 export const loginUser = async (email: string, password: string) => {
 
    // Check if user exists
-   const user = await User.findOne({ email });
+   const user = await User.findOne({ email }).select('+password');
    
    if (!user) {
      throw new Error('Invalid email or password');

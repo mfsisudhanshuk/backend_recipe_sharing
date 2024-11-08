@@ -12,3 +12,8 @@ export type userLoginPayload = {
 
 }
   
+export type userPayload = {
+  name: String,
+  email: String,
+  password: String,
+}
