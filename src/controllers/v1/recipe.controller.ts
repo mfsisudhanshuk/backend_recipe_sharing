@@ -1,31 +1,40 @@
 import type { Request, Response } from "express";
 import * as recipeService from "../../services/v1/recipe.service";
 import { validationResult } from "express-validator";
-import { STATUS_CODE } from "../../utils/constants.utils";
+import {
+  FAILED_MESSAGES,
+  STATUS_CODE,
+  SUCCESS_MESSAGES,
+} from "../../utils/constants.utils";
 import { AuthenticatedRequest } from "../../types/user.type";
 
 // Note: List of recipe for Home page
+// TODO: Update any type
 const getRecipeList = async (req: Request, res: Response): Promise<any> => {
   try {
     const recipes = await recipeService.getAllRecipes();
-    res.status(STATUS_CODE.OK).json({ data: recipes });
+    return res.status(STATUS_CODE.OK).json({
+      error: null,
+      message: SUCCESS_MESSAGES.FETCH_RECIPES,
+      data: recipes,
+      httpStatus: STATUS_CODE.OK,
+    });
   } catch (error: any) {
-    return res
-      .status(STATUS_CODE.INTERNAL_SERVER_ERROR)
-      .json({ error: "Error fetching recipes: " + error.message });
+    return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+      error: FAILED_MESSAGES.INTERNAL_SERVER_ERROR,
+      message: error.message,
+      data: null,
+      httpStatus: STATUS_CODE.INTERNAL_SERVER_ERROR,
+    });
   }
 };
 
-
-/**
- * Controller to fetch a single recipe by ID.
- * @param {Request} req - Express request object
- * @param {Response} res - Express response object
- */
-const getRecipe = async (req: Request, res: Response) : Promise<any>=> {
+// NOTE:  Controller to fetch a single recipe by ID.
+// TODO:  Update any type
+const getRecipe = async (req: Request, res: Response): Promise<any> => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({
+    return res.status(STATUS_CODE.BAD_REQUEST).json({
       errors: errors.array(),
     });
   }
@@ -34,31 +43,34 @@ const getRecipe = async (req: Request, res: Response) : Promise<any>=> {
 
   try {
     const recipe = await recipeService.getSingleRecipe(id);
-    
+
     if (!recipe) {
-      return res.status(404).json({
-        error: "Recipe not found",
+      return res.status(STATUS_CODE.RESOURCE_NOT_FOUND).json({
+        error: FAILED_MESSAGES.RECIPE_NOT_FOUND,
         message: null,
         httpStatus: 404,
         data: null,
       });
     }
 
-    return res.status(200).json({
-      success: true,
+    return res.status(STATUS_CODE.OK).json({
+      error: null,
+      message: SUCCESS_MESSAGES.FETCH_RECIPES,
       data: recipe,
+      httpStatus: STATUS_CODE.OK,
     });
   } catch (error: any) {
-    return res.status(500).json({
-      error: "Internal Server Error",
+    return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+      error: FAILED_MESSAGES.INTERNAL_SERVER_ERROR,
       message: error.message,
-      httpStatus: 500,
       data: null,
+      httpStatus: STATUS_CODE.INTERNAL_SERVER_ERROR,
     });
   }
 };
 
 // Note: Create a new recipe, logged user user only can create.
+// TODO: Update any type
 export const createRecipe = async (
   req: AuthenticatedRequest,
   res: Response
@@ -73,8 +85,7 @@ export const createRecipe = async (
   }
 
   try {
-    const { title, ingredients, steps, image, preparationTime} =
-      req.body;
+    const { title, ingredients, steps, image, preparationTime } = req.body;
 
     const newRecipe = await recipeService.createRecipe({
       title,
@@ -85,33 +96,42 @@ export const createRecipe = async (
       createdBy: req.user._id, // This should be the ID of the logged-in user
     });
 
-    res.status(STATUS_CODE.CREATED).json({ data: newRecipe });
+    return res.status(STATUS_CODE.CREATED).json({ 
+      error: null,
+      message: SUCCESS_MESSAGES.ADD_RECIPE,
+      data: newRecipe,
+      httpStatus: STATUS_CODE.CREATED
+     });
   } catch (error: any) {
-    res
-      .status(STATUS_CODE.INTERNAL_SERVER_ERROR)
-      .json({ error: "Error creating recipe: " + error.message });
+    return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+      error: FAILED_MESSAGES.ADD_RECIPE + error.message,
+      message: null,
+      data: null,
+      httpStatus: STATUS_CODE.INTERNAL_SERVER_ERROR,
+    });
   }
 };
 
-
-/**
- * Controller to handle rating a recipe
- * @param {Request} req - Express request object
- * @param {Response} res - Express response object
- */
-export const rateRecipe = async (req: Request, res: Response) => {
+// Note : Controller to handle rating a recipe
+// TODO: Update any type
+export const rateRecipe = async (req: Request, res: Response): Promise<any> => {
   try {
     const { recipeId } = req.params;
     const { rating } = req.body;
 
     const updatedRecipe = await recipeService.rateRecipe(recipeId, rating);
-    res.status(200).json({
-      message: "Recipe rated successfully",
+    return res.status(STATUS_CODE.OK).json({
+      error: null,
+      message: SUCCESS_MESSAGES.RATING_RECIPE,
       data: updatedRecipe,
+      httpStatus: STATUS_CODE.OK
     });
   } catch (error: any) {
-    res.status(400).json({
+    return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({
       error: error.message,
+      message: null,
+      data: null,
+      httpStatus: STATUS_CODE.INTERNAL_SERVER_ERROR
     });
   }
 };

@@ -45,7 +45,7 @@ export const SALT_ROUND = 10;
 export const VALIDATION_MESSAGE_LOGIN = {
   /** Message for invalid email format */
    EMAIL_VALIDATION: 'Please provide a valid email address',
-   PASSWORD_VALIDATION: 'Password must be at least 5 characters long'
+   PASSWORD_VALIDATION: 'Password must be at least 5 characters long',
 }
 
 /**
@@ -60,13 +60,29 @@ export const VALIDATION_MESSAGE_REGISTER = {
 
 export const SUCCESS_MESSAGES = {
   REGISTER: 'User registered successfully',
-  LOGIN: 'User login successful'
+  LOGIN: 'User login successful',
+  FETCH_RECIPES: 'Recipe fetched successfully',
+  ADD_RECIPE: 'Created a new recipe successfully',
+  RATING_RECIPE: 'Recipe rated successfully',
+  COMMENT_RECIPE: 'Comment added successfully',
+  FETCH_COMMENT: 'Comment fetched successfully',
 }
 
 export const FAILED_MESSAGES = {
   REGISTER: 'Error Creating user',
   LOGIN: 'Error logging in user',
-  INVALID_EMAIL_OR_PASSWORD: 'Invalid email or password'
+  INVALID_EMAIL_OR_PASSWORD: 'Invalid email or password',
+  FETCH_RECIPES: 'Error fetching recipes',
+  RECIPE_NOT_FOUND: 'Recipe not found',
+  INTERNAL_SERVER_ERROR: 'Internal Server Error',
+  ADD_RECIPE: 'Error creating recipe',
+  RATING_RECIPE: 'Recipe rated failed',
+  NOT_FOUND_COMMENT: 'No comments found for this recipe',
+  UNAUTHORIZED_ACCESS: 'Unauthorized access.',
+  USER_NOT_FOUND: 'User not found',
+  USER_TOKEN_EXPIRED: 'Session expired, please log in again.',
+  USER_INVALID_TOKEN:'Invalid token,  please log in again.'
+
 }
 
 
