@@ -1,5 +1,7 @@
-import mongoose, { Model } from "mongoose";
+// TODO : NOT USE SEPERATE DATABASE LOGIC FOR BETTER DECOUPLED .
+// WILL DO IN SECOND ITERATION.
 
+import { Model } from "mongoose";
 
 class DatabaseCrud {
   model: Model<any>;

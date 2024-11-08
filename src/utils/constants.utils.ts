@@ -35,3 +35,52 @@ export const PNG = "png";
 
 export const FORGOT_PASSWORD = "forgot-password";
 export const PASSWORD_RESET = "password-reset";
+
+export const SALT_ROUND = 10;
+
+/**
+ * Validation messages for login fields.
+ * @constant
+ */
+export const VALIDATION_MESSAGE_LOGIN = {
+  /** Message for invalid email format */
+   EMAIL_VALIDATION: 'Please provide a valid email address',
+   PASSWORD_VALIDATION: 'Password must be at least 5 characters long'
+}
+
+/**
+ * Validation messages for register fields.
+ * @constant
+ */
+export const VALIDATION_MESSAGE_REGISTER = {
+  ...VALIDATION_MESSAGE_LOGIN,
+   NAME: 'Name must be between 3 and 30 characters long',
+   EMAIL_ALREADY_EXIST: 'Email already in use'
+}
+
+export const SUCCESS_MESSAGES = {
+  REGISTER: 'User registered successfully',
+  LOGIN: 'User login successful'
+}
+
+export const FAILED_MESSAGES = {
+  REGISTER: 'Error Creating user',
+  LOGIN: 'Error logging in user',
+  INVALID_EMAIL_OR_PASSWORD: 'Invalid email or password'
+}
+
+
+export const PASSWORD_MIN_LENGTH = 5;
+
+export const NAME_MIN_LENGTH = 3;
+
+export const NAME_MAX_LENGTH = 30;
+
+// TODO: Uncomment and update these constants.
+// export const VALIDATION_MESSAGE_RECIPE = {
+  
+// }
+
+// export const VALIDATION_MESSAGE_COMMENT = {
+  
+// }

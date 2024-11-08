@@ -1,5 +1,9 @@
 import express from "express";
 import { authControllers } from "../../controllers/v1/auth.controller";
+import {
+  userLoginValidator,
+  userRegistrationValidator,
+} from "../../middleware/authValidation.middleware";
 
 /**
  * Router for handling recipe-related endpoints
@@ -9,10 +13,13 @@ import { authControllers } from "../../controllers/v1/auth.controller";
 const authRouters = express.Router();
 
 // NOTE: Route to Login user
-authRouters.post("/login",authControllers.userLogin);
+authRouters.post("/login", userLoginValidator, authControllers.userLogin);
 
 // NOTE: Route to Register user
-authRouters.get("/register", authControllers.userRegistration);
-
+authRouters.post(
+  "/register",
+  userRegistrationValidator,
+  authControllers.userRegistration
+);
 
 export default authRouters;
