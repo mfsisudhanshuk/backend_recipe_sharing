@@ -29,13 +29,6 @@ export const REGEX_NUMBER: RegExp = /^\d+$/;
 export const REGEX_EMAIL: RegExp =
   /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-export const JPEG = "jpeg";
-export const JPG = "jpg";
-export const PNG = "png";
-
-export const FORGOT_PASSWORD = "forgot-password";
-export const PASSWORD_RESET = "password-reset";
-
 export const SALT_ROUND = 10;
 
 /**
