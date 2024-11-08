@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import User from "../models/user.model";
 import { NextFunction } from "express";
 import type { Response } from "express";
-import { STATUS_CODE } from "../utils/constants.utils";
+import { FAILED_MESSAGES, STATUS_CODE } from "../utils/constants.utils";
 import { AuthenticatedRequest } from "../types/user.type";
 
 // AuthenticatedRequest
@@ -25,7 +25,7 @@ export const isAuthenticatedUser = async (
   if (!token) {
     return next(
       res.send({
-        error: "Unauthorized access.",
+        error: FAILED_MESSAGES.UNAUTHORIZED_ACCESS,
         message: null,
         httpStatus: STATUS_CODE.UNAUTHORIZED,
         data: null,
@@ -41,7 +41,7 @@ export const isAuthenticatedUser = async (
 
     if (!userExist) {
       return res.status(STATUS_CODE.RESOURCE_NOT_FOUND).json({
-        error: "User not found",
+        error: FAILED_MESSAGES.USER_NOT_FOUND,
         message: null,
         httpStatus: STATUS_CODE.RESOURCE_NOT_FOUND,
         data: null,
@@ -53,15 +53,15 @@ export const isAuthenticatedUser = async (
   } catch (error: any) {
     if (error.name === "TokenExpiredError") {
       return res.status(STATUS_CODE.UNAUTHORIZED).json({
-        error: "Session expired, please log in again.",
+        error:FAILED_MESSAGES.USER_TOKEN_EXPIRED,
         message: null,
-        httpStatus: 401,
+        httpStatus: STATUS_CODE.UNAUTHORIZED,
         data: null,
       });
     }
     // Handle other errors
     return res.status(500).json({
-      error: "Invalid token,  please log in again.",
+      error: FAILED_MESSAGES.USER_INVALID_TOKEN,
       message: error.message,
       httpStatus: STATUS_CODE.INTERNAL_SERVER_ERROR,
       data: null,

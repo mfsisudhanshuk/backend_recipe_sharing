@@ -3,7 +3,7 @@ import { authControllers } from "../../controllers/v1/auth.controller";
 import {
   userLoginValidator,
   userRegistrationValidator,
-} from "../../middleware/authValidation.middleware";
+} from "../../middlewares/authValidation.middleware";
 
 /**
  * Router for handling recipe-related endpoints

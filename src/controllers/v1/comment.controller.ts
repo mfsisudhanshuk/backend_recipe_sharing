@@ -2,17 +2,17 @@ import type { Request, Response } from "express";
 import * as commentRecipeService from "../../services/v1/comment.service";
 import { AuthenticatedRequest } from "../../types/user.type";
 import { validationResult } from "express-validator";
-import { STATUS_CODE } from "../../utils/constants.utils";
+import { FAILED_MESSAGES, STATUS_CODE, SUCCESS_MESSAGES } from "../../utils/constants.utils";
 
 const getRecipeComments = async (req: Request, res: Response): Promise<any> => {
-  const { recipeId } = req.params; // Extract recipe ID from route parameters
+  const { recipeId } = req.params;
 
   try {
     const comments = await commentRecipeService.getRecipeComments(recipeId);
 
     if (comments.length === 0) {
        return res.status(STATUS_CODE.OK).json({
-        error: "No comments found for this recipe.",
+        error: FAILED_MESSAGES.NOT_FOUND_COMMENT,
         message: null,
         httpStatus: STATUS_CODE.RESOURCE_NOT_FOUND,
         data: comments,
@@ -21,7 +21,7 @@ const getRecipeComments = async (req: Request, res: Response): Promise<any> => {
 
     return res.status(STATUS_CODE.OK).json({
       error: null,
-      message: 'Comment fetched successfully',
+      message: SUCCESS_MESSAGES.FETCH_COMMENT,
       httpStatus: STATUS_CODE.OK,
       data: comments,
     });
@@ -68,14 +68,14 @@ export const createRecipeComment = async (req: AuthenticatedRequest, res: Respon
     );
 
      return res.status(STATUS_CODE.CREATED).json({
-      success: true,
+      error: null,
       data: newComment,
-      message: 'Comment added successfully',
+      message: SUCCESS_MESSAGES.COMMENT_RECIPE,
       httpStatus: STATUS_CODE.CREATED
     });
   } catch (error: any) {
     return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({
-      error: error.message || "Internal Server Error",
+      error: error.message || FAILED_MESSAGES.INTERNAL_SERVER_ERROR,
       message: null,
       httpStatus: STATUS_CODE.INTERNAL_SERVER_ERROR,
       data: null,

@@ -1,11 +1,11 @@
 import express from "express";
 import { recipeController } from "../../controllers/v1/recipe.controller";
-import { isAuthenticatedUser } from "../../middleware/auth.middleware";
+import { isAuthenticatedUser } from "../../middlewares/auth.middleware";
 import {
   validateRecipe,
   validRecipeId,
   validateRating,
-} from "../../middleware/recipeValidation.middleware";
+} from "../../middlewares/recipeValidation.middleware";
 
 /**
  * Router for handling recipe-related endpoints
@@ -20,7 +20,7 @@ recipeRouters.post(
   isAuthenticatedUser,
   validateRecipe,
   recipeController.createRecipe
-); //TODO: Addd middleware only auth user
+);
 
 // NOTE: Route to get a specific recipe by ID
 recipeRouters.get("/recipe/:id", validRecipeId, recipeController.getRecipe);
@@ -31,6 +31,7 @@ recipeRouters.get("/recipes", recipeController.getRecipeList);
 // Note: Route to rate on recipe
 recipeRouters.post(
   "/recipes/:recipeId/rating",
+  isAuthenticatedUser,
   validateRating,
   recipeController.rateRecipe
 );
