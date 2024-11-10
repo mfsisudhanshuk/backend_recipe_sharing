@@ -12,7 +12,7 @@ export const connectDatabase = () => {
         `MongoDB Database connected with host ${con.connection.host}`
       );
     })
-    .catch((err) => console.log("error: ", err));
+    .catch((err) => console.log("error: ", err));//TODO: Update the logger instead of console.
 };
 
 // To remove Deprecation Warning

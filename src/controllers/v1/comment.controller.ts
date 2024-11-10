@@ -44,8 +44,8 @@ export const createRecipeComment = async (req: AuthenticatedRequest, res: Respon
     });
   }
   
-  const { recipeId } = req.params; // Get recipe ID from route parameters
-  const { comment } = req.body; // Get user ID and comment text from request body
+  const { recipeId } = req.params;
+  const { comment } = req.body; 
 
   const userId = req.user._id;
 
