@@ -1,5 +1,6 @@
 // NOTE: Add external package imports
 import express from "express";
+import helmet from "helmet"; 
 import type { Request, Response } from "express";
 import os from "os";
 import type { Express } from "express";
@@ -27,6 +28,15 @@ const PORT: Number = process.env.PORT ? parseInt(process.env.PORT) : 8001;
 app.use(express.json());
 
 app.use(cors());
+
+// Apply Helmet for security headers
+// Use helmet to secure the app
+app.use(helmet());
+
+// Disable the X-Powered-By header
+app.use(helmet.hidePoweredBy());
+
+app.use(helmet.frameguard({ action: 'sameorigin' }));
 
 // NOTE: Add routes
 app.use("/api/v1/", recipeRouters);

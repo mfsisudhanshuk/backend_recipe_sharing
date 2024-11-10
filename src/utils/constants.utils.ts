@@ -109,6 +109,19 @@ export const FAILED_MESSAGES = {
 
 }
 
+// TODO: Configure CS(Future scope)
+export const csp = {
+  directives: {
+    defaultSrc: ["'self'"],                               // Only allow content from the same origin
+    scriptSrc: ["'self'", "https://trusted.com"],         // Allow scripts from trusted sources
+    styleSrc: ["'self'", "https://trusted-styles.com"],   // Allow styles from trusted sources
+    imgSrc: ["'self'", "https://trusted-images.com"],    // Allow images from trusted sources
+    connectSrc: ["'self'", "https://api.trusted.com"],   // Allow connections to trusted APIs
+    fontSrc: ["'self'", "https://fonts.trusted.com"],    // Allow fonts from trusted sources
+    frameAncestors: ["'none'"],                         // Prevent embedding in frames
+  },
+};
+
 export const PASSWORD_MIN_LENGTH = 5;
 
 export const NAME_MIN_LENGTH = 3;
