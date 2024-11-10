@@ -35,7 +35,7 @@ app.use("/api/v1/auth/", authRouters);
 
 app.use("/api/v1/comments/", commentRouters);
 
-// NOTE: Healthcheck API
+// NOTE: Healthcheck API, Added type `any` to avoid typescript error
 app.get("/healthcheck", (req: Request, res: Response) : any => {
  
  const cpuModel = os.cpus()[0]?.model;
