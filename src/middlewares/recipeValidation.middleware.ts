@@ -11,7 +11,8 @@ export const validateRecipe = [
     .isArray({ min: 1 })
     .withMessage("Ingredients should be an array with at least one item"),
   body("steps").isString().withMessage("Steps are required"),
-  body("image").optional().isURL().withMessage("Image should be a valid URL"),
+  // TODO: Image required validation remove
+  // body("image").optional().isURL().withMessage("Image should be a valid URL"),
   body("preparationTime")
     .isInt({ min: 1 })
     .withMessage("Preparation time should be a positive integer"),
