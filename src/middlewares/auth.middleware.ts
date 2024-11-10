@@ -5,7 +5,6 @@ import type { Response } from "express";
 import { FAILED_MESSAGES, STATUS_CODE } from "../utils/constants.utils";
 import { AuthenticatedRequest } from "../types/user.type";
 
-// AuthenticatedRequest
 // Check if the use is AUTHENTICATED or not
 export const isAuthenticatedUser = async (
   req: AuthenticatedRequest,

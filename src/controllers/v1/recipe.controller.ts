@@ -40,7 +40,7 @@ const getRecipe = async (req: Request, res: Response): Promise<any> => {
     });
   }
 
-  const { id } = req.params; // Get the recipe ID from request parameters
+  const { id } = req.params;
 
   try {
     const recipe = await recipeService.getSingleRecipe(id);
@@ -76,7 +76,6 @@ export const createRecipe = async (
   req: AuthenticatedRequest,
   res: Response
 ): Promise<any> => {
-  // Validation middleware
 
   const errors = validationResult(req);
 
@@ -94,7 +93,7 @@ export const createRecipe = async (
       steps,
       image,
       preparationTime,
-      createdBy: req.user._id, // This should be the ID of the logged-in user
+      createdBy: req.user._id,
     });
 
     return res.status(STATUS_CODE.CREATED).json({ 

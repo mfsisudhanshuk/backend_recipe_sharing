@@ -1,27 +1,28 @@
 // validators/userValidator.js
 import { body, check } from "express-validator";
 import mongoose from "mongoose";
+import { VALIDATION_MESSAGE_RECIPE } from "../utils/constants.utils";
 
 export const validateRecipe = [
   body("title")
     .isString()
     .isLength({ min: 3, max: 100 })
-    .withMessage("Title should be between 3 and 100 characters"),
+    .withMessage(VALIDATION_MESSAGE_RECIPE.TITLE),
   body("ingredients")
     .isArray({ min: 1 })
-    .withMessage("Ingredients should be an array with at least one item"),
-  body("steps").isString().withMessage("Steps are required"),
+    .withMessage(VALIDATION_MESSAGE_RECIPE.INGREDIENTS),
+  body("steps").isString().withMessage(VALIDATION_MESSAGE_RECIPE.STEPS),
   // TODO: Image required validation remove
   // body("image").optional().isURL().withMessage("Image should be a valid URL"),
   body("preparationTime")
     .isInt({ min: 1 })
-    .withMessage("Preparation time should be a positive integer"),
+    .withMessage(VALIDATION_MESSAGE_RECIPE.PREPARATION_TIME),
 ];
 
 export const validRecipeId = [
   check("id")
     .isMongoId()
-    .withMessage("Invalid ID format")
+    .withMessage(VALIDATION_MESSAGE_RECIPE.INVALID_RECIPE_ID)
     .custom((value) => {
       // Optionally check if the ID exists in the database
       return mongoose
@@ -29,7 +30,7 @@ export const validRecipeId = [
         .findById(value)
         .then((recipe) => {
           if (!recipe) {
-            return Promise.reject("Recipe not found");
+            return Promise.reject(VALIDATION_MESSAGE_RECIPE.RECIPE_NOT_FOUND);
           }
         });
     }),
@@ -44,7 +45,7 @@ export const validateRating = [
     .custom(async (value) => {
       const recipeExists = await mongoose.model('Recipe').exists({ _id: value });
       if (!recipeExists) {
-        return Promise.reject('Recipe not found');
+        return Promise.reject(VALIDATION_MESSAGE_RECIPE.RECIPE_NOT_FOUND);
       }
     }),
 

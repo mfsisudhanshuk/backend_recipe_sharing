@@ -51,6 +51,33 @@ export const VALIDATION_MESSAGE_REGISTER = {
    EMAIL_ALREADY_EXIST: 'Email already in use'
 }
 
+/**
+ * Validation messages for recipe fields.
+ * @constant
+ */
+export const VALIDATION_MESSAGE_RECIPE = {
+  TITLE: 'Title should be between 3 and 100 characters',
+  INGREDIENTS: 'Ingredients should be an array with at least one item',
+  STEPS: 'Steps are required',
+  PREPARATION_TIME:'Preparation time should be a positive integer',
+  INVALID_RECIPE_ID: 'Invalid ID format',
+  RECIPE_NOT_FOUND: 'Recipe not found'
+}
+
+/**
+ * Validation messages for comment fields.
+ * @constant
+ */
+export const VALIDATION_MESSAGE_COMMENT = {
+  COMMENT: 'Comment text is required and should not be empty'
+}
+
+
+
+/**
+ * Success messages.
+ * @constant
+ */
 export const SUCCESS_MESSAGES = {
   REGISTER: 'User registered successfully',
   LOGIN: 'User login successful',
@@ -61,6 +88,10 @@ export const SUCCESS_MESSAGES = {
   FETCH_COMMENT: 'Comment fetched successfully',
 }
 
+/**
+ * Failed messages.
+ * @constant
+ */
 export const FAILED_MESSAGES = {
   REGISTER: 'Error Creating user',
   LOGIN: 'Error logging in user',
@@ -78,18 +109,10 @@ export const FAILED_MESSAGES = {
 
 }
 
-
 export const PASSWORD_MIN_LENGTH = 5;
 
 export const NAME_MIN_LENGTH = 3;
 
 export const NAME_MAX_LENGTH = 30;
 
-// TODO: Uncomment and update these constants.
-// export const VALIDATION_MESSAGE_RECIPE = {
-  
-// }
-
-// export const VALIDATION_MESSAGE_COMMENT = {
-  
-// }
+export const ROUTE_NOT_FOUND= 'Route not found'

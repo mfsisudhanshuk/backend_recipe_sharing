@@ -15,9 +15,9 @@ export const userRegistrationValidator = [
         .custom(async (email) => {
             const existingUser = await User.findOne({ email });
             if (existingUser) {
-                throw new Error(VALIDATION_MESSAGE_REGISTER.EMAIL_ALREADY_EXIST); // This error will be returned if email exists
+                throw new Error(VALIDATION_MESSAGE_REGISTER.EMAIL_ALREADY_EXIST); 
             }
-            return true; // If no error, return true to proceed
+            return true;
         }),
 
     body('password')

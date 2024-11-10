@@ -25,7 +25,6 @@ const userRegistration = async (req: Request, res: Response): Promise<any> => {
       httpStatus: STATUS_CODE.CREATED,
     });
   } catch (error:  any) {
-    // res.status(STATUS_CODE.BAD_REQUEST).json({ error: "Error Creating user" });
     return res.status(STATUS_CODE.BAD_REQUEST).json({
       error: error.message || FAILED_MESSAGES.REGISTER,
       message: null,
