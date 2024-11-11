@@ -39,7 +39,7 @@ recipeRouters.post(
   "/recipes/:recipeId/rating",
   isAuthenticatedUser,
   validateRating,
-  recipeController.rateRecipe
+  recipeController.rateRecipeById
 );
 
 export default recipeRouters;
