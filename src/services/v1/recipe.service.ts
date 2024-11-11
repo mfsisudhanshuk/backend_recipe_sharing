@@ -7,12 +7,26 @@ import Recipe from "../../models/recipe.model"; // Adjust the import path as nec
  * Fetch all recipes from the database.
  * @returns {Promise<Recipe[]>} List of recipes.
  */
-export const getAllRecipes = async (ingredient?: string): Promise<any[]> => {
+export const getAllRecipes = async (ingredient?: string, time?: number, rating?: number): Promise<any[]> => {
   try {
-    // If an ingredient is provided, search for recipes containing that ingredient
-    const filter = ingredient
-      ? { ingredients: { $regex: ingredient, $options: "i" } }
-      : {};
+
+    // Initialize filter
+    const filter: any = {};
+
+    // Ingredient filter (if provided)
+    if (ingredient) {
+      filter.ingredients = { $regex: ingredient, $options: "i" };
+    }
+
+    // Preparation time filter (if provided)
+    if (time && time > 0) {
+      filter.preparationTime = { $lte: time };
+    }
+
+    // Average rating filter (if provided)
+    if (rating && rating > 0) {
+      filter.averageRating = { $gte: rating };
+    }
 
     //  const recipes = await Recipe.find().populate('createdBy', 'username'); // TODO: Uncomment after user model adde Populate createdBy to get username
     const recipes = await Recipe.find(filter);
