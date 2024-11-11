@@ -1,4 +1,5 @@
 // services/recipe.service.ts
+import mongoose from "mongoose";
 import cloudinary from "../../config/cloudinary.config";
 import Recipe from "../../models/recipe.model"; // Adjust the import path as necessary
 
@@ -42,7 +43,7 @@ export const createRecipe = async (recipeData: any): Promise<any> => {
  * @param {string} id - The ID of the recipe to fetch.
  * @returns {Promise<Recipe | null>} The recipe if found, or null if not found.
  */
-export const getSingleRecipe = async (id: string): Promise<any | null> => {
+export const getSingleRecipe = async (id: string): Promise<any> => {
   try {
     const recipe = await Recipe.findById(id);
     return recipe; // Returns null if not found
@@ -53,38 +54,65 @@ export const getSingleRecipe = async (id: string): Promise<any | null> => {
 
 
 /**
- * Rate a recipe and update its average rating.
+ * Rate a recipe or update the user's existing rating.
  * @param {string} recipeId - The ID of the recipe to be rated.
- * @param {number} userRating - The rating provided by the user (e.g., between 1 and 5).
- * @returns {Promise<any>} - The updated recipe with the new average rating.
+ * @param {string} userId - The ID of the user providing the rating.
+ * @param {number} userRating - The rating provided by the user (between 1 and 5).
+ * @returns {Promise<any>} - The updated average rating and ratings list.
  */
-export const rateRecipe = async (recipeId: string, userRating: number): Promise<any> => {
+export const rateRecipe = async (recipeId: string, userId: string, userRating: number): Promise<any> => {
   if (userRating < 1 || userRating > 5) {
     throw new Error("Rating must be between 1 and 5");
   }
 
-  const recipe = await Recipe.findById(recipeId);
-  if (!recipe) {
-    throw new Error("Recipe not found");
+  try {
+    // Fetch the recipe by ID
+    const recipe = await Recipe.findById(recipeId);
+    if (!recipe) {
+      throw new Error("Recipe not found");
+    }
+
+ 
+    // Find if the user has already rated this recipe
+    const existingRating = recipe.ratings.find(
+      (rating) =>  rating.userId.toString() === userId.toString()
+    );
+    
+    if (existingRating) {
+      // If the user has already rated, update their rating
+      existingRating.rating = userRating;
+    } else {
+      // Add new rating entry if the user has not rated yet
+      recipe.ratings.push({
+        userId: new mongoose.Types.ObjectId(userId),
+        rating: userRating,
+      });
+    }
+
+    // Calculate the new average rating
+    const totalRatings = recipe.ratings.length;
+    const sumOfRatings = recipe.ratings.reduce((sum, { rating }) => sum + rating, 0);
+    const averageRating = totalRatings ? sumOfRatings / totalRatings : 0;
+
+    // Update the recipe with the new average rating (optional: if you want to store it separately)
+    recipe.averageRating = parseFloat(averageRating.toFixed(2));
+
+    // Save the updated recipe
+    await recipe.save();
+
+    return {
+      recipeId,
+      averageRating: recipe.averageRating,
+      totalRatings,
+      ratings: recipe.ratings,
+    };
+  } catch (error: any) {
+    throw new Error("Error updating rating: " + error.message);
   }
-
-  // Calculate new rating values
-  const newRatingCount = recipe.ratingCount + 1;
-  const newRatingTotal = recipe.rating * recipe.ratingCount + userRating;
-  const newAverageRating = newRatingTotal / newRatingCount;
-
-  // Update and save the recipe
-  recipe.rating = newAverageRating;
-  recipe.ratingCount = newRatingCount;
-  await recipe.save();
-
-  return recipe;
 };
-
 
 /**
  * Upload recipe image to Cloudinary and update recipe details.
- * @param {string} recipeId - The ID of the recipe to upload the image for.
  * @param {Express.Multer.File} file - The image file to be uploaded (req.file).
  * @returns {Promise<any>} - The updated recipe with the image URL.
  */
@@ -100,7 +128,6 @@ export const uploadRecipeImage = async (file: any): Promise<any> => {
       },
     });
 
-    console.log('upload result ', uploadResult.secure_url);
     return uploadResult.secure_url;
   } catch (error: any) {
     throw new Error(`Image upload failed: ${error.message}`);

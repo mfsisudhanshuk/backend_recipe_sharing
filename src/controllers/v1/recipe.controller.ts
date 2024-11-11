@@ -7,6 +7,7 @@ import {
   SUCCESS_MESSAGES,
 } from "../../utils/constants.utils";
 import { AuthenticatedRequest } from "../../types/user.type";
+import { rateRecipe } from "../../services/v1/recipe.service";
 
 // Note: List of recipe for Home page
 // TODO: Update any type
@@ -114,28 +115,31 @@ export const createRecipe = async (
 
 // Note : Controller to handle rating a recipe
 // TODO: Update any type
-export const rateRecipe = async (req: Request, res: Response): Promise<any> => {
+export const rateRecipeById = async (req: AuthenticatedRequest, res: Response) : Promise<any> => {
   try {
     const { recipeId } = req.params;
     const { rating } = req.body;
 
-    const updatedRecipe = await recipeService.rateRecipe(recipeId, rating);
+    const userId = req.user?._id;
+
+    // Call service to rate the recipe
+    const updatedRecipe = await rateRecipe(recipeId, userId, rating);
+    
     return res.status(STATUS_CODE.OK).json({
       error: null,
-      message: SUCCESS_MESSAGES.RATING_RECIPE,
+      message: "Recipe rated successfully",
       data: updatedRecipe,
-      httpStatus: STATUS_CODE.OK
+      httpStatus: STATUS_CODE.OK,
     });
   } catch (error: any) {
     return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({
       error: error.message,
       message: null,
       data: null,
-      httpStatus: STATUS_CODE.INTERNAL_SERVER_ERROR
+      httpStatus: STATUS_CODE.INTERNAL_SERVER_ERROR,
     });
   }
 };
-
 
 // TODO: Controller to handle image upload for a recipe.
 export const uploadImageController = async (req: any, res: Response) : Promise<any>=> {
@@ -175,6 +179,6 @@ export const recipeController = {
   getRecipeList,
   getRecipe,
   createRecipe,
-  rateRecipe,
+  rateRecipeById,
   uploadImageController,
 };
