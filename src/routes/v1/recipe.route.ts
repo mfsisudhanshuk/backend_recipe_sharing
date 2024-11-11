@@ -6,6 +6,7 @@ import {
   validRecipeId,
   validateRating,
 } from "../../middlewares/recipeValidation.middleware";
+import multer from "multer";
 
 /**
  * Router for handling recipe-related endpoints
@@ -13,6 +14,9 @@ import {
  * @description Provides endpoints to create, retrieve, and list recipes.
  */
 const recipeRouters = express.Router();
+
+// Multer configuration for file uploads
+const upload = multer({ dest: "uploads/" });
 
 // NOTE: Route to create a new recipe
 recipeRouters.post(
@@ -27,6 +31,8 @@ recipeRouters.get("/recipe/:id", validRecipeId, recipeController.getRecipe);
 
 // NOTE: Route to list of recipe
 recipeRouters.get("/recipes", recipeController.getRecipeList);
+
+recipeRouters.post("/upload", isAuthenticatedUser, upload.single("image"), recipeController.uploadImageController);
 
 // Note: Route to rate on recipe
 recipeRouters.post(
