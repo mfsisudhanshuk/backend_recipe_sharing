@@ -136,10 +136,45 @@ export const rateRecipe = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
+
+// TODO: Controller to handle image upload for a recipe.
+export const uploadImageController = async (req: any, res: Response) : Promise<any>=> {
+  try {
+    const file = req.file;
+
+    if (!file) {
+      return res.status(STATUS_CODE.BAD_REQUEST).json({
+        error: "No image file provided",
+        message: null,
+        data: null,
+        httpStatus: STATUS_CODE.BAD_REQUEST,
+      });
+    }
+
+    const response = await recipeService.uploadRecipeImage(file);
+
+    return res.status(STATUS_CODE.OK).json({
+      error:  null,
+      message: "Image upload successfully",
+      data: response,
+      httpStatus: STATUS_CODE.OK,
+    });
+  } catch (error: any) {
+    return res.status(STATUS_CODE.INTERNAL_SERVER_ERROR).json({
+      error: error.message,
+      message: null,
+      data: null,
+      httpStatus: STATUS_CODE.INTERNAL_SERVER_ERROR,
+    });
+  }
+};
+
+
 //NOTE: Grouping exports in an object named `recipeController`
 export const recipeController = {
   getRecipeList,
   getRecipe,
   createRecipe,
   rateRecipe,
+  uploadImageController,
 };

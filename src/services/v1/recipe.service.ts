@@ -1,4 +1,5 @@
 // services/recipe.service.ts
+import cloudinary from "../../config/cloudinary.config";
 import Recipe from "../../models/recipe.model"; // Adjust the import path as necessary
 
 /**
@@ -78,4 +79,30 @@ export const rateRecipe = async (recipeId: string, userRating: number): Promise<
   await recipe.save();
 
   return recipe;
+};
+
+
+/**
+ * Upload recipe image to Cloudinary and update recipe details.
+ * @param {string} recipeId - The ID of the recipe to upload the image for.
+ * @param {Express.Multer.File} file - The image file to be uploaded (req.file).
+ * @returns {Promise<any>} - The updated recipe with the image URL.
+ */
+export const uploadRecipeImage = async (file: any): Promise<any> => {
+  try {
+    // Upload image to Cloudinary
+    const uploadResult = await cloudinary.uploader.upload(file.path, {
+      folder: "recipes", // Store images in a "recipes" folder in Cloudinary
+      public_id: `Image_${Date.now()}`, // Unique public ID for the image
+      transformation: {
+        fetch_format: "auto",
+        quality: "auto",
+      },
+    });
+
+    console.log('upload result ', uploadResult.secure_url);
+    return uploadResult.secure_url;
+  } catch (error: any) {
+    throw new Error(`Image upload failed: ${error.message}`);
+  }
 };
