@@ -13,8 +13,10 @@ import { rateRecipe } from "../../services/v1/recipe.service";
 // TODO: Update any type
 const getRecipeList = async (req: Request, res: Response): Promise<any> => {
   const ingredient = req.query.ingredient as string;
+  const time = req.query.time ? Number(req.query.time) : 0;
+  const rating = req.query.rating ? Number(req.query.rating) : 0;
   try {
-    const recipes = await recipeService.getAllRecipes(ingredient);
+    const recipes = await recipeService.getAllRecipes(ingredient,time, rating)  ;
     return res.status(STATUS_CODE.OK).json({
       error: null,
       message: SUCCESS_MESSAGES.FETCH_RECIPES,
