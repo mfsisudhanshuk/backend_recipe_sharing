@@ -1,5 +1,19 @@
 import mongoose from "mongoose";
 
+const RatingSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  rating: {
+    type: Number,
+    required: true,
+    min: 1,
+    max: 5,
+  },
+});
+
 const recipeSchema = new mongoose.Schema(
   {
     title: {
@@ -22,13 +36,13 @@ const recipeSchema = new mongoose.Schema(
     preparationTime: {
       type: Number, //NOTE: in minutes
     },
-    rating: {
-      type: Number,
-      default: 0,
+    ratings: {
+      type: [RatingSchema], // Array to store individual user ratings
+      default: [],
     },
-    ratingCount: {
+    averageRating: {
       type: Number,
-      default: 0,
+      default: 0
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
